@@ -14,14 +14,13 @@ steps:
   displayName: 'Check and Generate gradlew Script'
   workingDirectory: $(System.DefaultWorkingDirectory)
 
-
 - script: |
     # Ensure Gradle Wrapper is executable
     chmod +x gradlew
     # Build the project using the Gradle Wrapper
     ./gradlew build
   displayName: 'Build with Gradle'
-  workingDirectory: $(System.DefaultWorkingDirectory)
+  workingDirectory: $(System.DefaultWorkingDirectory)/BroTravel
 
 - task: PublishTestResults@2
   inputs:
