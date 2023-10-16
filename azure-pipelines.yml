@@ -5,10 +5,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: UseJavaVersion@0
+- task: JavaToolInstaller@0
   inputs:
     versionSpec: '11'
-    addToPath: true
+    jdkArchitectureOption: 'x64' # Adjust as needed
+    jdkSourceOption: 'PreInstalled' # Use pre-installed JDK
 
 - script: |
     # Ensure Gradle Wrapper is executable
