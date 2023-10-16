@@ -5,11 +5,14 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: JavaToolInstaller@0
-  inputs:
-    versionSpec: '11'
-    jdkArchitectureOption: 'x64' # Adjust as needed
-    jdkSourceOption: 'PreInstalled' # Use pre-installed JDK
+- script: |
+    # Check if the gradlew script exists
+    if [ ! -f "gradlew" ]; then
+        echo "gradlew script not found. Generating it..."
+        ./gradle wrapper
+    fi
+  displayName: 'Check and Generate gradlew Script'
+  workingDirectory: $(System.DefaultWorkingDirectory)
 
 - script: |
     # Ensure Gradle Wrapper is executable
