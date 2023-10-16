@@ -6,20 +6,14 @@ pool:
 
 steps:
 - script: |
-    # Install Gradle on the build agent
-    sudo apt-get update
-    sudo apt-get install -y gradle
-  displayName: 'Install Gradle'
-  continueOnError: true # Continue even if installation fails
-
-- script: |
     # Check if the gradlew script exists
     if [ ! -f "gradlew" ]; then
         echo "gradlew script not found. Generating it..."
-        ./gradle wrapper
+        gradle wrapper # Generate Gradle Wrapper files
     fi
   displayName: 'Check and Generate gradlew Script'
   workingDirectory: $(System.DefaultWorkingDirectory)
+
 
 - script: |
     # Ensure Gradle Wrapper is executable
