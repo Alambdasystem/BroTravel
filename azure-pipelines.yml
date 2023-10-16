@@ -12,7 +12,7 @@ steps:
         gradle wrapper # Generate Gradle Wrapper files
     fi
   displayName: 'Check and Generate gradlew Script'
-  workingDirectory: $(System.DefaultWorkingDirectory)
+  workingDirectory: $(System.DefaultWorkingDirectory)  # Set the working directory to the root of your Gradle project
 
 - script: |
     # Ensure Gradle Wrapper is executable
@@ -20,7 +20,7 @@ steps:
     # Build the project using the Gradle Wrapper
     ./gradlew build
   displayName: 'Build with Gradle'
-  workingDirectory: $(System.DefaultWorkingDirectory)/BroTravel
+  workingDirectory: $(System.DefaultWorkingDirectory)  # Set the working directory to the root of your Gradle project
 
 - task: PublishTestResults@2
   inputs:
