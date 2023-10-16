@@ -2,25 +2,29 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-- script: |
-    # Check if the gradlew script exists
-    if [ ! -f "gradlew" ]; then
-        echo "gradlew script not found. Generating it..."
-        ./gradle wrapper
-    fi
-  displayName: 'Check and Generate gradlew Script'
-
-- task: Gradle@2
+- task: UseJavaVersion@0
   inputs:
-    workingDirectory: ''
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
+    versionSpec: '11'
+    addToPath: true
+
+- script: |
+    # Ensure Gradle Wrapper is executable
+    chmod +x gradlew
+    # Build the project using the Gradle Wrapper
+    ./gradlew build
+  displayName: 'Build with Gradle'
+  workingDirectory: $(System.DefaultWorkingDirectory)
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: JUnit
     testResultsFiles: '**/TEST-*.xml'
-    tasks: 'build'
+    searchFolder: '$(System.DefaultWorkingDirectory)/build/test-results'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(System.DefaultWorkingDirectory)/build/libs'
+    artifactName: 'drop'
