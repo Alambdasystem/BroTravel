@@ -1,8 +1,3 @@
-# Gradle
-# Build your Java project and run tests with Gradle using a Gradle wrapper script.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
 - main
 
@@ -10,6 +5,14 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- script: |
+    # Check if the gradlew script exists
+    if [ ! -f "gradlew" ]; then
+        echo "gradlew script not found. Generating it..."
+        ./gradle wrapper
+    fi
+  displayName: 'Check and Generate gradlew Script'
+
 - task: Gradle@2
   inputs:
     workingDirectory: ''
